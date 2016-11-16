@@ -64,7 +64,6 @@ function buscar(){
                             <th>Nº</th>
                             <th>Modelo</th>
                             <th>Matrícula</th>
-                            <th>Nº poltronas</th>
                             <th>Peso</th>
                             <th>Capacidade</th>
                             <th>Autonomia</th>
@@ -75,7 +74,7 @@ function buscar(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    if(isset($_POST['status'])){
+    if(isset($_POST['status']) && ($_POST['status'] != "selecione")){
         $status = ' = "'. $_POST['status'].'"';
     }else{
         $status = ' <> "INATIVO"';
@@ -85,7 +84,7 @@ function buscar(){
     
     if(isset($_POST['matricula'])){ $query .= ' AND matricula LIKE "'.$_POST['matricula'].'%"';}
     
-    if(isset($_POST['cnpj_companhia'])){ $query .= ' AND cnpj_companhia = '.$_POST['cnpj_companhia'].';';}
+    if(isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){ $query .= ' AND cnpj_companhia = '.$_POST['cnpj_companhia'];}
     
     $query .= ' ORDER BY modelo, matricula ASC';
     
@@ -99,7 +98,6 @@ function buscar(){
                 <td>'.++$count.'</td>
                 <td>'.$row['modelo'].'</td>
                 <td>'.$row['matricula'].'</td>
-                <td>'.$row['nro_poltronas'].'</td>
                 <td>'.$row['peso_aviao'].' Kg</td>
                 <td>'.$row['capacidade_bagagem'].' Kg</td>
                 <td>'.$row['autonomia'].' Km</td>

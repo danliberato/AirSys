@@ -1,12 +1,5 @@
-TAGS CURTAS PHP
-
-Este site necessita que a diretiva "short_open_tag", localizada no arquivo php.ini, esteja habilitada
-Para que o mesmo funcione no Netbeans vá em Propriedades do projeto > Códigos-fonte > Permitir tags curtas
-*Lembre-se de que deve existir pelo menos uma tag "<?php" no começo de cada página
-
-EDIT: NÃO ESTÁ SENDO USADA SHORT TAG, mas o "<=" funciona por padrao acima do PHP 5.4
-
 -----------------------------------------
+CONFIGURAÇÕES
 Esse site requer um nível de aninhamento maior que o padrão
 Procurar por "max_nesting_level" no arquivo php.ini, colocar um valor no mínimo de 20 e reiniciar o Apache
 

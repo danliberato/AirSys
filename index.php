@@ -32,11 +32,11 @@ $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC")
                 <ul class="w3-navbar w3-white w3-wide w3-padding-8 w3-card-2">
                     <li>
                         <a href="#slideShow" class="w3-margin-left"><b>AirSys</b> Sistemas de aeroportos</a>
-                      </li>
+                    </li>
                       <!-- Float links to the right. Hide them on small screens -->
-                      <li class="w3-right w3-hide-small">
+                    <li class="w3-right w3-hide-small">
                         <a href="#refBusca" class="w3-left">Cadastro de Aeronave</a>
-                        <a href="#manutencao" class="w3-left">Manutenção</a>
+                        <a href="#refCompanhias" class="w3-left">Companhias</a>
                     </li>
                 </ul>
             </div>
@@ -44,8 +44,8 @@ $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC")
             <div id="slideShow" class="row">
                 <?php include_once './View/slideshow.php';?>
             </div>
-            <div id="busca" class="row col-sm-11">
-                <div class="col-sm-2 col-sm-offset-1">
+            <div id="busca" class="row col-sm-10 col-sm-offset-1">
+                <div class="col-sm-2">
                     <h4>Buscar Aeronaves:</h4>
                 </div>
                 <div class="col-sm-3">
@@ -53,8 +53,8 @@ $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC")
                         <option value="selecione">Companhia aérea...</option>
                         <?php
                         foreach ($rsCompanhia as $companhia) {?>
-                            <option value="<? echo $companhia['cnpj'];?>">
-                                <?=$companhia['nome'];?>
+                            <option value="<?php echo $companhia['cnpj'];?>">
+                                <?php echo $companhia['nome'];?>
                             </option>
                         <?php }?>
                     </select>
@@ -81,24 +81,24 @@ $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC")
                     <button class="btn btn-success" data-toggle="modal" data-target="#add_aeronave_modal">Adicionar aeronave</button>
                 </div>
             </div>
-            <div id="infos" class="row col-sm-11">
-                <div class="col-sm-2 col-sm-offset-1">
+            <div id="infos" class="row col-sm-10 col-sm-offset-1">
+                <!--<div class="col-sm-2 col-sm-offset-1">
                     <h4>Lista de Aeronaves</h4>
-                </div>
+                </div>-->
                 <div class="input-group col-sm-2 pull-right">
                     <button class="btn btn-primary" type="button">
                         Aeronaves diferentes <span id="countAeronavesDiff" class="badge"></span>
                     </button>
                 </div>
-                <div class="input-group col-sm-2 pull-right">
+                <div class="input-group col-sm-2">
                     <button class="btn btn-primary" type="button">
                         Total de Aeronaves <span id="countAeronaves" class="badge"></span>
                     </button>
-                </div>                
+                </div>
             </div>
-            <div id="resultado" class="row col-sm-11">
+            <div id="resultado" class="row col-sm-10 col-sm-offset-1">
                 <!-- Content Section -->
-                <div class="records_content col-sm-offset-1">
+                <div class="records_content">
                     <!-- Bootstrap Modals -->
                 </div>
                 <?php include_once './View/modals.php';?>

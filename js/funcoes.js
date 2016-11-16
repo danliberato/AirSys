@@ -70,9 +70,9 @@ function validaCamposAddAeronave(){
 function atualizaTabela() {
 
     $.post("Controller/ajax/crudAeronave.php", {
-        operacao: "buscar",
-        cnpj_companhia : $("buscaCompanhia").val(),
-        status : $("buscaStatus").val()
+        cnpj_companhia : $("#buscaCompanhia").val(),
+        status : $("#buscaStatus").val(),
+        operacao: "buscar"
     }, function (data, status) {
         $(".records_content").html(data);
     })
