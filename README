@@ -32,3 +32,22 @@ RF5: O sistema deve gerar um relatório com os seguintes dados: número de aeron
 RF6: O sistema deve gerar um relatório relatório com o número de modelo de aviões do aeroporto.
 RF7: O sistema deve gerar um relatório de todos os voos compostos por determinada aeronave.
 RF8: O sistema deve gerar relatórios com toda as diferentes aeronaves do aeroporto e aeronave de maior autonomia.
+
+
+-----------------------------------------
+USANDO O GIT:
+• Clonando o repositório
+- Criar pasta para o projeto e entrar nela (mkdir AirSys, cd AirSys)
+- Inicializar Git (git init)
+- Referenciar repositórios (git remote add airsys git@github.com:danliberato/AirSys)
+- Clonar (baixar) o repositório remoto para o local (git pull airsys master)
+
+• Adicionando mudanças
+- Adicionar os arquivos ("git add nome-do-arquivo" OU "git add ." para adicionar todos)
+- Commitar os arquivos (git commit -m "comentario sobre as mudanças efetuadas")
+
+• Enviando mudanças
+- Eenvia as mudanças para o servidor remoto (git push airsys master)
+
+• Verificando mudanças
+- Se durante o tempo em que fez o pull e o push outra pessoa que também participe do projeto fez alterações o push será rejeitado e será atualizar o projeto local antes de enviar novas alterações (git fetch origin)
