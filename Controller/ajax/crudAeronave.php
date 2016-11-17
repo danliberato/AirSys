@@ -125,7 +125,7 @@ function populaFormDetalhes(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    $query = 'SELECT * FROM aeronave WHERE status <> "INATIVO" AND matricula LIKE "'.$_POST['matricula'].'%"';
+    $query = 'SELECT * FROM aeronave WHERE matricula = "'.$_POST['matricula'].'"';
     
     $rs = $mysql->executeQuery($query);
     

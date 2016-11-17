@@ -96,7 +96,7 @@
                     <?php
                     foreach ($rsCompanhia as $companhia) {?>
                         <option value="<? echo $companhia['cnpj'];?>">
-                            <?=$companhia['nome'];?>
+                            <?php echo $companhia['nome'];?>
                         </option>
                     <?php }?>
                     </select>
@@ -194,7 +194,7 @@
                     <?php
                     foreach ($rsCompanhia as $companhia) {?>
                         <option value="<? echo $companhia['cnpj'];?>">
-                            <?=$companhia['nome'];?>
+                            <?php echo $companhia['nome'];?>
                         </option>
                     <?php }?>
                     </select>

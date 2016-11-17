@@ -5,6 +5,12 @@ include_once("Controller/ConexaoBD.php");
 
 $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC");
 
+$arrayCompanhia = array();
+
+while ($companhia = mysqli_fetch_object($rsCompanhia)) {
+    $arrayCompanhia[][0] = $companhia->cnpj;
+    $arrayCompanhia[][1] = $companhia->nome;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -52,11 +58,9 @@ $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC")
                     <select class="form-control" id="buscaCompanhia">
                         <option value="selecione">Companhia aérea...</option>
                         <?php
-                        foreach ($rsCompanhia as $companhia) {?>
-                            <option value="<?php echo $companhia['cnpj'];?>">
-                                <?php echo $companhia['nome'];?>
-                            </option>
-                        <?php }?>
+                        foreach ($arrayCompanhia as $cia){
+                            echo '<option value="'.$cia[0].'">'.$cia[1].'</option>';
+                        }?>
                     </select>
                 </div>
                 <div class="form-group col-sm-2">
@@ -70,7 +74,7 @@ $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC")
                     </select>
                 </div>
                 <div class="input-group col-sm-2 pull-left">
-                    <input id="companhia" type="text" class="form-control" placeholder="Pesquisar por matrícula" aria-describedby="basic-addon1" maxlength="11">
+                    <input id="buscaMatricula" type="text" class="form-control" placeholder="Pesquisar por matrícula" aria-describedby="basic-addon1" maxlength="11">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" onclick="atualizaTabela()" type="submit">
                             <span class="glyphicon glyphicon-search"></span>

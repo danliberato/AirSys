@@ -70,6 +70,7 @@ function validaCamposAddAeronave(){
 function atualizaTabela() {
 
     $.post("Controller/ajax/crudAeronave.php", {
+        matricula : $("#buscaMatricula").val(),
         cnpj_companhia : $("#buscaCompanhia").val(),
         status : $("#buscaStatus").val(),
         operacao: "buscar"
@@ -87,7 +88,7 @@ function detalhesAeronave(id){
     $.post('Controller/ajax/crudAeronave.php',
     {matricula : id, operacao: 'populaForm'},
     function(data){
-        //$(".records_content").html(obj);
+        //$(".records_content").html(data);
         $.each($.parseJSON(data), function(i, aeronave){
             $("#update_matricula").val(aeronave["matricula"]);
             $("#update_modelo").val(aeronave["modelo"]);
@@ -100,8 +101,8 @@ function detalhesAeronave(id){
             $("#update_peso_maximo").val(aeronave["peso_maximo"]);
             $("#update_autonomia").val(aeronave["autonomia"]);
             $("#update_capacidade_bagagem").val(aeronave["capacidade_bagagem"]);
-            $("#update_status").select(aeronave["status"]);
-            $("#update_cnpj_companhia").select(aeronave["cnpj_companhia"]);
+            $("#update_status").val(aeronave["status"]);
+            $("#update_cnpj_companhia").val(aeronave["cnpj_companhia"]);
             
         }); 
     })
