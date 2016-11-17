@@ -90,12 +90,12 @@ while ($companhia = mysqli_fetch_object($rsCompanhia)) {
                     <h4>Lista de Aeronaves</h4>
                 </div>-->
                 <div class="input-group col-sm-2 pull-right">
-                    <button class="btn btn-primary" type="button">
+                    <button class="btn btn-primary" type="button" onclick="countAeronavesDiferentes()">
                         Aeronaves diferentes <span id="countAeronavesDiff" class="badge"></span>
                     </button>
                 </div>
                 <div class="input-group col-sm-2">
-                    <button class="btn btn-primary" type="button">
+                    <button class="btn btn-primary" type="button" onclick="countAeronaves()">
                         Total de Aeronaves <span id="countAeronaves" class="badge"></span>
                     </button>
                 </div>
