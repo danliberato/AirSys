@@ -8,7 +8,7 @@
 
 /**
  * Description of modals
- *
+ * 
  * @author daan
  */
 ?>
@@ -93,12 +93,9 @@
                     <label for="cnpj_companhia">Companhias</label>
                     <select class="form-control" id="cnpj_companhia">
                         <option value="selecione">Selecione...</option>
-                    <?php
-                    foreach ($rsCompanhia as $companhia) {?>
-                        <option value="<? echo $companhia['cnpj'];?>">
-                            <?php echo $companhia['nome'];?>
-                        </option>
-                    <?php }?>
+                        <?php
+                            echo $optionsCompanhia;
+                        ?>
                     </select>
                 </div>
             </div>
@@ -191,13 +188,9 @@
                     <label for="update_cnpj_companhia">Companhias</label>
                     <select class="form-control" id="update_cnpj_companhia">
                         <option value="selecione">Selecione...</option>
-                    <?php
-                    foreach ($rsCompanhia as $companhia) {?>
-                        <option value="<? echo $companhia['cnpj'];?>">
-                            <?php echo $companhia['nome'];?>
-                        </option>
-                    <?php }?>
-                    </select>
+                        <?php
+                            echo $optionsCompanhia;
+                        ?>
                 </div>
             </div>
             <div class="modal-footer">

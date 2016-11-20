@@ -1,6 +1,6 @@
 $(document).ready(function(){
     
-    atualizaTabela();
+    //atualizaTabela();
     
     countAeronavesDiferentes();
     

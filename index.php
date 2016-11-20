@@ -5,11 +5,10 @@ include_once("Controller/ConexaoBD.php");
 
 $rsCompanhia = $mysql->executeQuery("SELECT * FROM companhia ORDER BY nome ASC");
 
-$arrayCompanhia = array();
+$optionsCompanhia = "";
 
-while ($companhia = mysqli_fetch_object($rsCompanhia)) {
-    $arrayCompanhia[][0] = $companhia->cnpj;
-    $arrayCompanhia[][1] = $companhia->nome;
+while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
+    $optionsCompanhia .= '<option value="'.$companhia['cnpj'].'">'.utf8_encode($companhia['nome']).'</option>';
 }
 ?>
 <!DOCTYPE html>
@@ -39,7 +38,6 @@ while ($companhia = mysqli_fetch_object($rsCompanhia)) {
                     <li>
                         <a href="#slideShow" class="w3-margin-left"><b>AirSys</b> Sistemas de aeroportos</a>
                     </li>
-                      <!-- Float links to the right. Hide them on small screens -->
                     <li class="w3-right w3-hide-small">
                         <a href="#refBusca" class="w3-left">Cadastro de Aeronave</a>
                         <a href="#refCompanhias" class="w3-left">Companhias</a>
@@ -47,7 +45,7 @@ while ($companhia = mysqli_fetch_object($rsCompanhia)) {
                 </ul>
             </div>
             <!-- SLIDESHOW -->
-            <div id="slideShow" class="row">
+            <div id="slideShow" class="">
                 <?php include_once './View/slideshow.php';?>
             </div>
             <div id="busca" class="row col-sm-10 col-sm-offset-1">
@@ -58,9 +56,8 @@ while ($companhia = mysqli_fetch_object($rsCompanhia)) {
                     <select class="form-control" id="buscaCompanhia">
                         <option value="selecione">Companhia aérea...</option>
                         <?php
-                        foreach ($arrayCompanhia as $cia){
-                            echo '<option value="'.$cia[0].'">'.$cia[1].'</option>';
-                        }?>
+                            echo $optionsCompanhia;
+                        ?>
                     </select>
                 </div>
                 <div class="form-group col-sm-2">
@@ -73,7 +70,7 @@ while ($companhia = mysqli_fetch_object($rsCompanhia)) {
                         <option value="INATIVO">Inativo</option>
                     </select>
                 </div>
-                <div class="input-group col-sm-2 pull-left">
+                <div class="input-group col-sm-2 pull-left" style="z-index: 0">
                     <input id="buscaMatricula" type="text" class="form-control" placeholder="Pesquisar por matrícula" aria-describedby="basic-addon1" maxlength="11">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" onclick="atualizaTabela()" type="submit">
