@@ -39,7 +39,7 @@
 
                 <div class="form-group col-sm-3">
                     <label for="envergadura">Envergadura</label>
-                    <input type="text" id="envergadura" placeholder="Envergadura (m)" class="form-control" maxlength="4" />
+                    <input type="text" id="envergadura" placeholder="Envergadura (m)" class="form-control" maxlength="4"/>
                 </div>
 
                 <div class="form-group col-sm-5">
@@ -79,7 +79,7 @@
 
                 <div class="form-group col-sm-4">
                     <label for="status">Status</label>
-                    <select class="form-control" id="sel1">
+                    <select class="form-control" id="status">
                         <option value="selecione">Selecione...</option>
                         <option value="ATIVO">Ativo</option>
                         <option value="EM_VOO">Em vôo</option>
@@ -119,7 +119,7 @@
 
                 <div class="form-group col-sm-4">
                     <label for="update_matricula">Matrícula</label>
-                    <input type="text" id="update_matricula" placeholder="Matrícula" class="form-control" maxlength="11"/>
+                    <input type="text" id="update_matricula" placeholder="Matrícula" class="form-control" maxlength="11" disabled/>
                 </div>
 
                 <div class="form-group col-sm-8">
@@ -197,7 +197,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" onclick="atualizaAeronave()">Salvar mudanças</button>
-                <input type="hidden" id="hidden_user_id">
             </div>
         </div>
     </div>

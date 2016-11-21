@@ -4,7 +4,7 @@ include("../ConexaoBD.php");
 
 switch ($_POST['operacao']){
     case "salvar":
-        salvar();
+        persistAeronave("salvar");
         break;
     case "remover":
         remover();
@@ -16,7 +16,7 @@ switch ($_POST['operacao']){
         buscar();
         break;
     case "alterar":
-        alterar();
+        persistAeronave("alterar");
         break;
     case "countDiff":
         countDiff();
@@ -29,31 +29,56 @@ switch ($_POST['operacao']){
     
     
 
-function salvar(){
-    if(isset($_POST['matricula']) && isset($_POST['status']) && isset($_POST['cnpj_companhia'])){
-        echo $_POST['matricula'];
-        // get values 
-        $matricula = $_POST['matricula'];
-        $modelo = $_POST['modelo'];
-        $data_fabricacao = $_POST['data_fabricacao'];
-        $envergadura = $_POST['envergadura'];
-        $total_horas_voo = $_POST['total_horas_voo'];
-        $combustivel = $_POST['combustivel'];
-        $peso_aviao = $_POST['peso_aviao'];
-        $nro_poltronas = $_POST['nro_poltronas'];
-        $peso_maximo = $_POST['peso_maximo'];
-        $consumo = $_POST['consumo'];
-        $autonomia = $_POST['autonomia'];
-        $capacidade_bagagem = $_POST['capacidade_bagagem'];
-        $status = $_POST['status'];
-        $cnpj_cia = $_POST['cnpj_companhia'];
- 
-        $query = "INSERT INTO aeronave VALUES('$matricula', '$modelo', '$data_fabricacao', '$envergadura', '$total_horas_voo', '$combustivel',"
-                . "'$peso_aviao', '$nro_poltronas', '$peso_maximo', '$consumo', '$autonomia', '$capacidade_bagagem', '$status', '$cnpj_cia')";
-        if (!$result = mysqli_query($con, $query)) {
-            exit(mysqli_error($con));
+function persistAeronave($operacao){
+    
+    $mysql = new ConexaoBD("localhost", "user", "123456", "test");
+    
+    
+    $matricula = $_POST['matricula'];
+    $modelo = isset($_POST['modelo']) ? $_POST['modelo'] : "";
+    $data_fabricacao = isset($_POST['data_fabricacao']) ? $_POST['data_fabricacao'] : "";
+    $envergadura = isset($_POST['envergadura']) ? $_POST['envergadura'] : "";
+    $total_horas_voo = isset($_POST['total_horas_voo']) ? $_POST['total_horas_voo'] : "";
+    $combustivel = isset($_POST['combustivel']) ? $_POST['combustivel'] : "";
+    $peso_aviao = isset($_POST['peso_aviao']) ? $_POST['peso_aviao'] : "";
+    $nro_poltronas = isset($_POST['nro_poltronas']) ? $_POST['nro_poltronas']  : "";
+    $peso_maximo = isset($_POST['peso_maximo']) ? $_POST['peso_maximo'] : "";
+    $consumo = isset($_POST['consumo']) ? $_POST['consumo'] : "";
+    $autonomia = isset($_POST['autonomia']) ? $_POST['autonomia'] : "";
+    $capacidade_bagagem = isset($_POST['capacidade_bagagem']) ? $_POST['capacidade_bagagem'] : "";
+    $status = $_POST['status'];
+    $cnpj_cia = $_POST['cnpj_companhia'];
+
+    if($operacao == "salvar"){
+        $rs = $mysql->executeQuery("SELECT COUNT(matricula) as qtd FROM aeronave WHERE matricula = '".$_POST['matricula']."';");
+        
+        if($rs["qtd"] == 0){
+            $query = "INSERT INTO aeronave VALUES('$matricula', '$modelo', '$data_fabricacao', '$envergadura', '$total_horas_voo', "
+                    . "'$combustivel', '$peso_aviao', '$nro_poltronas', '$peso_maximo', '$consumo', '$autonomia', "
+                    . "'$capacidade_bagagem', '$status', '$cnpj_cia')";
+
+            $rs = $mysql->executeQuery($query);
+            $retorno = "Dados da aeronave inseridos com sucesso!";
+        }else{
+            $retorno = "Aeronave já existente no sistema!";
         }
-    }else{}
+    }else{
+        
+        $rs = $mysql->executeQuery("SELECT COUNT(matricula) as qtd FROM aeronave WHERE matricula = '".$_POST['matricula']."';");
+        
+        $query = "UPDATE aeronave SET matricula = '$matricula', modelo = '$modelo', data_fabricacao = '$data_fabricacao', "
+                . "envergadura = '$envergadura', total_horas_voo = '$total_horas_voo', combustivel ='$combustivel', "
+                . "peso_aviao = '$peso_aviao', nro_poltronas = '$nro_poltronas', peso_maximo = '$peso_maximo', consumo = '$consumo', "
+                . "autonomia = '$autonomia', capacidade_bagagem = '$capacidade_bagagem', status = '$status', "
+                . "cnpj_companhia = '$cnpj_cia' WHERE matricula = '".$matricula."';";
+
+        $rs = $mysql->executeQuery($query);
+        $retorno = "Aeronave de matrícula ".$matricula." alterada com sucesso!";
+    }
+
+    echo $retorno;
+
+        
 }
 
 function buscar(){
@@ -91,9 +116,14 @@ function buscar(){
     $result = $mysql->executeQuery($query);
 
         $count = 0;
+        $botaoDeletar = '';
 
         foreach ($result as $row){
 
+            if($row['status'] != 'INATIVO'){
+                $botaoDeletar = '<button onclick="removeAeronave(\''.$row['matricula'].'\')" class="btn btn-danger">Deletar</button>';
+            }
+            
             $tabela .= '<tr>
                 <td>'.++$count.'</td>
                 <td>'.$row['modelo'].'</td>
@@ -106,14 +136,14 @@ function buscar(){
 
                 <td>
                     <button onclick="detalhesAeronave(\''.$row['matricula'].'\')" class="btn btn-info" data-toggle="modal" data-target="#update_aeronave_modal">Visualizar</button>
-                    <button onclick="removeAeronave(\''.$row['matricula'].'\')" class="btn btn-danger">Deletar</button>
+                    '.$botaoDeletar.'
                 </td>
             </tr>';
             
         }
     
     if($count == 0){
-         $tabela .= '<tr><td colspan="6">Nenhum registro encontrado!</td></tr>';
+         $tabela .= '<tr><td colspan="9" text-center><h4><b>Nenhum registro encontrado!</b></h4></td></tr>';
     }
     
     $tabela .= '</table>';
@@ -149,17 +179,13 @@ function populaFormDetalhes(){
     echo json_encode($dados);
 }
 
-function alterar(){
-    return $_POST['matricula'];
-}
-
 function remover(){
 
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
     $query = 'UPDATE aeronave SET status = "INATIVO" WHERE matricula = "'.$_POST['matricula'].'"';
     
-    $rs = $mysql->executeQuery($query);
+    $mysql->executeQuery($query);
 }
 
 function countDiff(){

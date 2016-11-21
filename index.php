@@ -40,7 +40,7 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                     </li>
                     <li class="w3-right w3-hide-small">
                         <a href="#refBusca" class="w3-left">Cadastro de Aeronave</a>
-                        <a href="#refCompanhias" class="w3-left">Companhias</a>
+                        <a href="#relatorios" class="w3-left">Relatórios</a>
                     </li>
                 </ul>
             </div>
@@ -53,7 +53,7 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                     <h4>Buscar Aeronaves:</h4>
                 </div>
                 <div class="col-sm-3">
-                    <select class="form-control" id="buscaCompanhia">
+                    <select class="form-control" id="buscaCompanhia" onchange="atualizaTabela()">
                         <option value="selecione">Companhia aérea...</option>
                         <?php
                             echo $optionsCompanhia;
@@ -61,7 +61,7 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                     </select>
                 </div>
                 <div class="form-group col-sm-2">
-                    <select class="form-control" id="buscaStatus">
+                    <select class="form-control" id="buscaStatus" onchange="atualizaTabela()">
                         <option value="selecione">Status...</option>
                         <option value="ATIVO">Ativo</option>
                         <option value="EM_VOO">Em vôo</option>
@@ -83,9 +83,6 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                 </div>
             </div>
             <div id="infos" class="row col-sm-10 col-sm-offset-1">
-                <!--<div class="col-sm-2 col-sm-offset-1">
-                    <h4>Lista de Aeronaves</h4>
-                </div>-->
                 <div class="input-group col-sm-2 pull-right">
                     <button class="btn btn-primary" type="button" onclick="countAeronavesDiferentes()">
                         Aeronaves diferentes <span id="countAeronavesDiff" class="badge"></span>
@@ -103,6 +100,13 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                     <!-- Bootstrap Modals -->
                 </div>
                 <?php include_once './View/modals.php';?>
+            </div>
+            <div id="relatorios" class="row col-sm-10 col-sm-offset-1">
+                <h3>Relatórios</h3>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">Vôos</a></li>
+                    <li role="presentation"><a href="#">Companhias</a></li>
+                </ul>
             </div>
         </div>
         <!-- Footer -->

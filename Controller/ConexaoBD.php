@@ -49,11 +49,17 @@ class ConexaoBD{
             $this->disconnect();
             return $this->result;
         }else{
-            echo "Erro ao executar SQL:".  mysqli_error();
             die();
             $this->disconnect();
+            return $this->Erro();
         }
     }
     
+    function bancoErro(){
+        return mysqli_error();
+    }
     
+    function bancoAviso(){
+        return mysqli_warning_count();
+    }
 }
