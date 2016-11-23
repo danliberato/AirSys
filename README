@@ -5,25 +5,25 @@ Procurar por "max_nesting_level" no arquivo php.ini, colocar um valor no mínimo
 
 -----------------------------------------
 REQUISITOS DE DADOS
-RD1: Consulta que retorna o peso e capacidade de cada modelo;
-RD2: Consulta que retorna o número de modelos de aeronaves do aeroporto;
-RD3: Deve ser utilizado tipos enumerados em caso de opções que sejam pré-definidas (no caso de status da aeronave, por exemplo);
++RD1: Consulta que retorna o peso e capacidade de cada modelo;
++RD2: Consulta que retorna o número de modelos de aeronaves do aeroporto;
++RD3: Deve ser utilizado tipos enumerados em caso de opções que sejam pré-definidas (no caso de status da aeronave, por exemplo);
 RD4: Consulta por manutenções de uma aeronave deve retornar data e ordem de serviço;
 RD5: Consulta de voos em que uma aeronave está composta deve mostrar dados do voo, companhia que possui a aeronave, número de matrícula da aeronave;
-RD6: A busca por aeronaves deve ser feita pela matrícula;
-RD7: Consulta que retorna a quantidade de aeronaves no aeroporto;
-RD8: Consulta da aeronave de determinada empresa deve retornar todos os dados de cada aeronave;
++RD6: A busca por aeronaves deve ser feita pela matrícula;
++RD7: Consulta que retorna a quantidade de aeronaves no aeroporto;
++RD8: Consulta da aeronave de determinada empresa deve retornar todos os dados de cada aeronave;
 RD9: Consulta por mecânicos deve retornar todos os dados pessoais do mecânico;
 
 
 REQUISITOS FUNCIONAIS
-RF1: O sistema deve permitir manter uma aeronave;
-RF2: O sistema deve permitir alterar o status de uma aeronave;
-RF3: O sistema deve permitir a consulta de dados uma aeronave;
++RF1: O sistema deve permitir manter uma aeronave;
++RF2: O sistema deve permitir alterar o status de uma aeronave;
++RF3: O sistema deve permitir a consulta de dados uma aeronave;
 RF4: O sistema deve gerar um relatório com os seguintes dados: quantidade total de modelos, número de aeronaves para cada modelo, com seu peso e capacidade;*
 RF5: O sistema deve gerar um relatório de todos os voos compostos por determinada aeronave;*
 RF6: O sistema deve gerar relatório de todas as manutenções de cada aeronave;*
-RF7: O sistema deve permitir a busca por todas as aeronaves de uma determinada companhia filtrado pelo status;
++RF7: O sistema deve permitir a busca por todas as aeronaves de uma determinada companhia filtrado pelo status;
 RF8: O sistema deve permitir a busca por todos os mecânicos envolvidos em uma manutenção.
 
 -----------------------------------------

@@ -34,7 +34,7 @@
 
                 <div class="form-group col-sm-4">
                     <label for="data_fabricacao">Data de Fabricação</label>
-                    <input type="date" id="data_fabricacao" placeholder="Data" class="form-control" />
+                    <input type="date" id="data_fabricacao" placeholder="Data" class="form-control" maxlength="8"/>
                 </div>
 
                 <div class="form-group col-sm-3">
@@ -129,7 +129,7 @@
 
                 <div class="form-group col-sm-4">
                     <label for="update_data_fabricacao">Data de Fabricação</label>
-                    <input type="date" id="update_data_fabricacao" placeholder="Data" class="form-control" />
+                    <input type="date" id="update_data_fabricacao" placeholder="Data" class="form-control" maxlength="8"/>
                 </div>
 
                 <div class="form-group col-sm-3">
@@ -193,6 +193,22 @@
                         ?>
                     </select>
                 </div>
+                
+                <div id="manutencao" class="col-sm-12 container">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" class="active"><a href="#tab-voos" data-toggle="tab">Vôos</a></li>
+                        <li role="presentation"><a href="#tab-manutencao" data-toggle="tab">Manutenção</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-voos">
+                            teste 1
+                        </div>
+                        <div class="tab-pane" id="tab-manutencao">
+                            teste 2
+                        </div>
+                    </div>
+                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

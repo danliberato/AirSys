@@ -44,6 +44,7 @@ function addAeronave() {
                operacao: operacao
            }, function (data) {
                //$(".records_content").html(data);
+               alert(data);
                $("#add_aeronave_modal").modal("hide");
                atualizaTabela();
                limpaCamposForm();
@@ -74,27 +75,28 @@ function atualizaAeronave(){
         var consumo = combustivel / autonomia;
         var operacao = "alterar";
 
-        $.post("Controller/ajax/crudAeronave.php",{
-            matricula: matricula,
-            modelo : modelo,
-            data_fabricacao : data_fabricacao,
-            envergadura : envergadura,
-            total_horas_voo : total_horas_voo,
-            combustivel : combustivel,
-            peso_aviao : peso_aviao,
-            nro_poltronas : nro_poltronas,
-            peso_maximo : peso_maximo,
-            autonomia : autonomia,
-            capacidade_bagagem : capacidade_bagagem,
-            status : status,
-            cnpj_companhia : cnpj_companhia,
-            consumo : consumo,
-            operacao : operacao
+           // Add record
+           $.post("Controller/ajax/crudAeronave.php", {
+               matricula : matricula,
+               modelo: modelo,
+               data_fabricacao: data_fabricacao,
+               envergadura: envergadura,
+               total_horas_voo: total_horas_voo,
+               combustivel: combustivel,
+               peso_aviao: peso_aviao,
+               nro_poltronas: nro_poltronas,
+               peso_maximo: peso_maximo,
+               autonomia: autonomia,
+               capacidade_bagagem: capacidade_bagagem,
+               status: status,
+               cnpj_companhia: cnpj_companhia,
+               consumo: consumo,
+               operacao: operacao
         },function (retorno){
             //$(".records_content").html(retorno);
-            alert(retorno);
             $("#update_aeronave_modal").modal("hide");
             atualizaTabela();
+            alert(retorno);
             limpaCamposForm();
             
         }).fail(function(textStatus, errorThrown) {
@@ -110,23 +112,22 @@ function detalhesAeronave(matricula){
         operacao: 'populaForm'},
     function(data){
         //$(".records_content").html(data);
-        $.each($.parseJSON(data), function( aeronave){
-            $("#update_matricula").val(aeronave["matricula"]);
-            $("#update_matricula_nova").val(aeronave["matricula"]);
-            $("#update_modelo").val(aeronave["modelo"]);
-            $("#update_data_fabricacao").val(aeronave["data_fabricacao"]);
-            $("#update_envergadura").val(aeronave["envergadura"]);
-            $("#update_total_horas_voo").val(aeronave["total_horas_voo"]);
-            $("#update_combustivel").val(aeronave["combustivel"]);
-            $("#update_peso_aviao").val(aeronave["peso_aviao"]);
-            $("#update_nro_poltronas").val(aeronave["nro_poltronas"]);
-            $("#update_peso_maximo").val(aeronave["peso_maximo"]);
-            $("#update_autonomia").val(aeronave["autonomia"]);
-            $("#update_capacidade_bagagem").val(aeronave["capacidade_bagagem"]);
-            $("#update_status").val(aeronave["status"]);
-            $("#update_cnpj_companhia").val(aeronave["cnpj_companhia"]);
-            
-        }); 
+        var aeronave = $.parseJSON(data)[0];
+        
+        $("#update_matricula").val(aeronave["matricula"]);
+        $("#update_modelo").val(aeronave["modelo"]);
+        $("#update_data_fabricacao").val(aeronave["data_fabricacao"]);
+        $("#update_envergadura").val(aeronave["envergadura"]);
+        $("#update_total_horas_voo").val(aeronave["total_horas_voo"]);
+        $("#update_combustivel").val(aeronave["combustivel"]);
+        $("#update_peso_aviao").val(aeronave["peso_aviao"]);
+        $("#update_nro_poltronas").val(aeronave["nro_poltronas"]);
+        $("#update_peso_maximo").val(aeronave["peso_maximo"]);
+        $("#update_autonomia").val(aeronave["autonomia"]);
+        $("#update_capacidade_bagagem").val(aeronave["capacidade_bagagem"]);
+        $("#update_status").val(aeronave["status"]);
+        $("#update_cnpj_companhia").val(aeronave["cnpj_companhia"]);
+        
     })
     .fail(function(textStatus, errorThrown) {
         console.error("Erro: " + textStatus, errorThrown);

@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
+mysqli_report(MYSQLI_REPORT_STRICT);
 
 include("../ConexaoBD.php");
 
@@ -27,12 +29,10 @@ switch ($_POST['operacao']){
     default :
 }
     
-    
 
 function persistAeronave($operacao){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
-    
     
     $matricula = $_POST['matricula'];
     $modelo = isset($_POST['modelo']) ? $_POST['modelo'] : "";
@@ -50,7 +50,7 @@ function persistAeronave($operacao){
     $cnpj_cia = $_POST['cnpj_companhia'];
 
     if($operacao == "salvar"){
-        $rs = $mysql->executeQuery("SELECT COUNT(matricula) as qtd FROM aeronave WHERE matricula = '".$_POST['matricula']."';");
+        $rs = mysqli_fetch_assoc($mysql->executeQuery("SELECT COUNT(matricula) as qtd FROM aeronave WHERE matricula = '".$_POST['matricula']."';"));
         
         if($rs["qtd"] == 0){
             $query = "INSERT INTO aeronave VALUES('$matricula', '$modelo', '$data_fabricacao', '$envergadura', '$total_horas_voo', "
@@ -64,8 +64,6 @@ function persistAeronave($operacao){
         }
     }else{
         
-        $rs = $mysql->executeQuery("SELECT COUNT(matricula) as qtd FROM aeronave WHERE matricula = '".$_POST['matricula']."';");
-        
         $query = "UPDATE aeronave SET matricula = '$matricula', modelo = '$modelo', data_fabricacao = '$data_fabricacao', "
                 . "envergadura = '$envergadura', total_horas_voo = '$total_horas_voo', combustivel ='$combustivel', "
                 . "peso_aviao = '$peso_aviao', nro_poltronas = '$nro_poltronas', peso_maximo = '$peso_maximo', consumo = '$consumo', "
@@ -77,7 +75,6 @@ function persistAeronave($operacao){
     }
 
     echo $retorno;
-
         
 }
 
@@ -99,19 +96,35 @@ function buscar(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    if(isset($_POST['status']) && ($_POST['status'] != "selecione")){
-        $status = ' = "'. $_POST['status'].'"';
-    }else{
-        $status = ' <> "INATIVO"';
+    $query = 'SELECT * FROM aeronave ';
+    
+    if(isset($_POST['status']) && ($_POST['status'] != "selecione") 
+            || isset($_POST['matricula']) && ($_POST['matricula'] != "")
+            || isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){
+        
+        $query .= 'WHERE ';
+        $hasConditions = false;
+
+        if(isset($_POST['status']) && ($_POST['status'] != "selecione")){
+            $query .= ' status = "'. $_POST['status'].'"';
+            $hasConditions = true;
+        }
+
+        if(isset($_POST['matricula']) && $_POST['matricula'] != ''){ 
+            $query .= $hasConditions ? ' AND ' : '';
+            $query .= ' matricula LIKE "'.$_POST['matricula'].'%"';
+            $hasConditions = true;
+
+        }
+
+        if(isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){ 
+            $query .= $hasConditions ? ' AND ' : '';
+            $query .= ' cnpj_companhia = '.$_POST['cnpj_companhia'];
+
+        }
     }
-    
-    $query = 'SELECT * FROM aeronave WHERE status '.$status.'';
-    
-    if(isset($_POST['matricula'])){ $query .= ' AND matricula LIKE "'.$_POST['matricula'].'%"';}
-    
-    if(isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){ $query .= ' AND cnpj_companhia = '.$_POST['cnpj_companhia'];}
-    
     $query .= ' ORDER BY modelo, matricula ASC';
+    
     
     $result = $mysql->executeQuery($query);
 
@@ -157,26 +170,25 @@ function populaFormDetalhes(){
     
     $query = 'SELECT * FROM aeronave WHERE matricula = "'.$_POST['matricula'].'"';
     
-    $rs = $mysql->executeQuery($query);
+    $result = mysqli_fetch_assoc($mysql->executeQuery($query));
     
-    foreach ($rs as $row){
-        $dados[] = [
-            "matricula" => $row['matricula'],
-            "modelo" => $row['modelo'],
-            "data_fabricacao" => $row['data_fabricacao'],
-            "envergadura" => $row['envergadura'],
-            "total_horas_voo" => $row['total_horas_voo'],
-            "combustivel" => $row['combustivel'],
-            "peso_aviao" => $row['peso_aviao'],
-            "nro_poltronas" => $row['nro_poltronas'],
-            "peso_maximo" => $row['peso_maximo'],
-            "consumo" => $row['consumo'],
-            "autonomia" => $row['autonomia'],
-            "capacidade_bagagem" => $row['capacidade_bagagem'],
-            "status" => $row['status'],
-            "cnpj_companhia" => $row['cnpj_companhia']];
-    }
-    echo json_encode($dados);
+    $aeronave[] = [
+        "matricula" => $result['matricula'],
+        "modelo" => $result['modelo'],
+        "data_fabricacao" => $result['data_fabricacao'],
+        "envergadura" => $result['envergadura'],
+        "total_horas_voo" => $result['total_horas_voo'],
+        "combustivel" => $result['combustivel'],
+        "peso_aviao" => $result['peso_aviao'],
+        "nro_poltronas" => $result['nro_poltronas'],
+        "peso_maximo" => $result['peso_maximo'],
+        "consumo" => $result['consumo'],
+        "autonomia" => $result['autonomia'],
+        "capacidade_bagagem" => $result['capacidade_bagagem'],
+        "status" => $result['status'],
+        "cnpj_companhia" => $result['cnpj_companhia']];
+
+        echo json_encode($aeronave);
 }
 
 function remover(){

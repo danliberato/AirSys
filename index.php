@@ -17,9 +17,6 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/funcoes.js"></script>
     <link rel="shortcut icon" href="icon.ico" >
     <link href="css/estilo.css" rel="stylesheet">
     <link href="css/w3.css" rel="stylesheet">
@@ -114,5 +111,9 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
             <?php include_once './View/footer.php';?>
         </footer>
         <!-- /Footer -->
+        <!-- scripts no fim para agilizar o carregamento da página -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/funcoes.js"></script>
     </body>
 </html>
