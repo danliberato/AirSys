@@ -1,3 +1,10 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 $(document).ready(function(){
     
     countAeronavesDiferentes();
@@ -113,7 +120,7 @@ function detalhesAeronave(matricula){
     function(data){
         //$(".records_content").html(data);
         var aeronave = $.parseJSON(data)[0];
-        
+        limpaCamposForm();
         $("#update_matricula").val(aeronave["matricula"]);
         $("#update_modelo").val(aeronave["modelo"]);
         $("#update_data_fabricacao").val(aeronave["data_fabricacao"]);
@@ -128,19 +135,94 @@ function detalhesAeronave(matricula){
         $("#update_status").val(aeronave["status"]);
         $("#update_cnpj_companhia").val(aeronave["cnpj_companhia"]);
         
+        getVoosByAeronave(aeronave["matricula"]);
+        getMecanicosByAeronave(aeronave["matricula"]);
     })
     .fail(function(textStatus, errorThrown) {
         console.error("Erro: " + textStatus, errorThrown);
       });
 }
 
-function removeAeronave(id){
+/*
+ * Search for all flights of an aircraft
+ * @param {string} matricula
+ * @returns {A table (html) with all flights}
+ */
+function getVoosByAeronave(matricula){
     
-    if(confirm("Deseja deletar a aeronave de matrícula "+id+"?")){
+    $.post('Controller/ajax/crudAeronave.php',
+    {matricula : matricula, 
+        operacao: 'getVoos'},
+    function(data){
+        //$(".records_content").html(data);
+        //$("#tab_voos").html(data);
+        $('<table></table>').addClass('table table-bordered table-striped text-center').attr({id: 'table_voos'}).appendTo("#tab_voos");
+        var tr = $('<tr></tr>').appendTo("#table_voos");
+        $('<th>Nº Vôo</th>').appendTo(tr);
+        $('<th>Data/Hora</th>').appendTo(tr);
+        $('<th>Aerop. Origem</th>').appendTo(tr);
+        $('<th>Aerop. Destino</th>').appendTo(tr);
+        $('<th>Portão de Embarque</th>').appendTo(tr);
+        $.each($.parseJSON(data), function(i, voo){
+            var trVoos = $('<tr></tr>').appendTo("#table_voos");
+            $('<td>'+voo['nro_voo']+'</td>').appendTo(trVoos);
+            $('<td>'+voo['data_hora']+'</td>').appendTo(trVoos);
+            $('<td>'+voo['aeroporto_origem']+'</td>').appendTo(trVoos);
+            $('<td>'+voo['aeroporto_destino']+'</td>').appendTo(trVoos);
+            $('<td>'+voo['portao_embarque']+'</td>').appendTo(trVoos);
+        });
+        
+    })
+    .fail(function(textStatus, errorThrown) {
+        console.error("Erro: " + textStatus, errorThrown);
+      });
+}
+
+/*
+ * 
+ * @param {type} matricula
+ * @returns {A table (html) with all mecanichs ever involved in an aircraft keeping}
+ */
+function getMecanicosByAeronave(matricula){
+    
+    $.post('Controller/ajax/crudAeronave.php',
+    {matricula : matricula, 
+        operacao: 'getMecanicos'},
+    function(data){
+        //$(".records_content").html(data);
+        $('<table></table>').addClass('table table-bordered table-striped text-center').attr({id: 'table_mecanicos'}).appendTo("#tab_mecanicos");
+        var tr = $('<tr></tr>').appendTo("#table_mecanicos");
+        $('<th>Ordem Serviço</th>').appendTo(tr);
+        $('<th>CPF</th>').appendTo(tr);
+        $('<th>Nome</th>').appendTo(tr);
+        $('<th>Endereço</th>').appendTo(tr);
+        $.each($.parseJSON(data), function(i, mecanico){
+            var trMecanicos = $('<tr></tr>').appendTo("#table_mecanicos");
+            $('<td>'+mecanico['ordem_servico']+'</td>').appendTo(trMecanicos);
+            $('<td>'+mecanico['cpf_mecanico']+'</td>').appendTo(trMecanicos);
+            $('<td>'+mecanico['nome']+'</td>').appendTo(trMecanicos);
+            $('<td>'+mecanico['endereco']+'</td>').appendTo(trMecanicos);
+        });
+        
+    })
+    .fail(function(textStatus, errorThrown) {
+        console.error("Erro: " + textStatus, errorThrown);
+      });
+    
+}
+
+/**
+ * Delete aircraft (Actually just change aircraft status to "INATIVO" (unable))
+ * @param {string} matricula
+ * @returns {alert() if success or javascript error}
+ */
+function removeAeronave(matricula){
+    
+    if(confirm("Deseja deletar a aeronave de matrícula "+matricula+"?")){
         var operacao = "remover";
 
         $.post("Controller/ajax/crudAeronave.php", {
-            matricula: id,
+            matricula: matricula,
             operacao: operacao
         }, function () {
             alert("Aeronave excluída com sucesso!");
@@ -152,6 +234,10 @@ function removeAeronave(id){
     setTimeout(atualizaTabela(),500);
 }
 
+/*
+ * Update main table based on options set for searching.
+ * @returns {undefined}
+ */
 function atualizaTabela() {
 
     $.post("Controller/ajax/crudAeronave.php", {
@@ -169,8 +255,11 @@ function atualizaTabela() {
     });    
 }
 
+
+/*
+ * Clear all modal fields (add and update modals)
+ */
 function limpaCamposForm(){
-    
     //campos do form de insert
     $("#matricula").val("");
     $("#modelo").val("");
@@ -199,8 +288,13 @@ function limpaCamposForm(){
     $("#update_capacidade_bagagem").val("");
     $("#update_status").val("selecione");
     $("#update_cnpj_companhia").val("selecione");
+    $("#tab_voos").html("");
+    $("#tab_mecanicos").html("");
 }
 
+/*
+ * Count how many different aircraft models are in the system
+ */
 function countAeronavesDiferentes(){
     
     var operacao = "countDiff";
@@ -216,6 +310,9 @@ function countAeronavesDiferentes(){
     
 }
 
+/*
+ * Count how many aircrafts are in the system
+ */
 function countAeronaves(){
     
     var operacao = "countAeronaves";
@@ -231,7 +328,9 @@ function countAeronaves(){
     
 }
 
-
+/*
+ * Check all fields before add an aircraft.
+ */
 function validaCamposAddAeronave(){
     if($("#matricula").val() === ""){
         alert("Preencha o campo Matricula");
@@ -246,6 +345,9 @@ function validaCamposAddAeronave(){
     return true;
 }
 
+/*
+ * Check all fields before update an aircraft.
+ */
 function validaCamposUpdateAeronave(){
     if($("#update_matricula").val() === ""){
         alert("Preencha o campo Matricula");

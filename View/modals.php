@@ -1,18 +1,13 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of modals
  * 
  * @author daan
  */
 ?>
-
+<link href="css/estilo.css" rel="stylesheet">
+    <link href="css/w3.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 <!-- Modal - Insert Aeronave -->
 <div class="modal fade" id="add_aeronave_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -194,17 +189,17 @@
                     </select>
                 </div>
                 
-                <div id="manutencao" class="col-sm-12 container">
+                <div id="update_detalhes" class="col-sm-12 container">
                     <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#tab-voos" data-toggle="tab">Vôos</a></li>
-                        <li role="presentation"><a href="#tab-manutencao" data-toggle="tab">Manutenção</a></li>
+                        <li role="presentation" class="active"><a href="#tab_voos" data-toggle="tab">Vôos</a></li>
+                        <li role="presentation"><a href="#tab_mecanicos" data-toggle="tab">Manutenção</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab-voos">
-                            teste 1
+                        <div class="tab-pane active" id="tab_voos">
+                            
                         </div>
-                        <div class="tab-pane" id="tab-manutencao">
-                            teste 2
+                        <div class="tab-pane" id="tab_mecanicos">
+                            
                         </div>
                     </div>
                 </div>

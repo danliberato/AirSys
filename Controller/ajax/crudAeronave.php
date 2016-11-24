@@ -14,6 +14,12 @@ switch ($_POST['operacao']){
     case "populaForm":
         populaFormDetalhes();
         break;
+    case "getVoos":        
+        getVoosByAeronave();
+        break;
+    case "getMecanicos":        
+        getMecanicosByAeronave();
+        break;
     case "buscar":
         buscar();
         break;
@@ -189,6 +195,49 @@ function populaFormDetalhes(){
         "cnpj_companhia" => $result['cnpj_companhia']];
 
         echo json_encode($aeronave);
+}
+
+function getVoosByAeronave(){
+    
+    $mysql = new ConexaoBD("localhost", "user", "123456", "test");
+    
+    $query = "SELECT * FROM voo WHERE matricula_aeronave = '".$_POST['matricula']."' ORDER BY data_hora DESC;";
+    
+    $result = $mysql->executeQuery($query);
+    $lista_voo = array();
+    
+    foreach ($result as $voo){
+        $lista_voo[] = [
+          "nro_voo" => $voo["nro_voo"],
+          "data_hora" => $voo["data_hora"],
+          "aeroporto_origem" => $voo["aeroporto_origem"],
+          "aeroporto_destino" => $voo["aeroporto_destino"],
+          "portao_embarque" => $voo["portao_embarque"]
+        ];
+    }
+    
+    echo json_encode($lista_voo);
+}
+
+function getMecanicosByAeronave(){
+    
+    $mysql = new ConexaoBD("localhost", "user", "123456", "test");
+    
+    $query = "SELECT DISTINCT mu.ordem_servico, ma.cpf_mecanico, mo.nome, mo.endereco FROM manutencao mu JOIN manutencia ma JOIN mecanico mo ON mu.ordem_servico = ma.ordem_servico AND mo.cpf = ma.cpf_mecanico AND mu.aeronave_matricula = '".$_POST['matricula']."';";
+    
+    $result = $mysql->executeQuery($query);
+    $lista_mecanicos = array();
+    
+    foreach ($result as $mecanico){
+        $lista_mecanicos[] = [
+          "ordem_servico" => $mecanico["ordem_servico"],
+          "cpf_mecanico" => $mecanico["cpf_mecanico"],
+          "nome" => utf8_encode($mecanico["nome"]),
+          "endereco" => utf8_encode($mecanico["endereco"])
+        ];
+    }
+    
+    echo json_encode($lista_mecanicos);
 }
 
 function remover(){
