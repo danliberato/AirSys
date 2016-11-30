@@ -10,6 +10,17 @@ $(document).ready(function(){
     countAeronavesDiferentes();
     
     countAeronaves();
+    
+    $('.date').mask('11/11/1111');
+        $('.time').mask('00:00:00');
+        $('.date_time').mask('00/00/0000 00:00:00');
+        $('.cep').mask('00000-000');
+        $('.phone').mask('0000-0000');
+        $('.phone_with_ddd').mask('(00) 0000-0000');
+        $('.phone_us').mask('(000) 000-0000');
+        $('.mixed').mask('AAA 000-S0S');
+        $('.cpf').mask('000.000.000-00', {reverse: true});
+        $('.money').mask('000.000.000.000.000,00', {reverse: true});
 });
 
 function addAeronave() {
@@ -160,9 +171,9 @@ function getVoosByAeronave(matricula){
         var tr = $('<tr></tr>').appendTo("#table_voos");
         $('<th>Nº Vôo</th>').appendTo(tr);
         $('<th>Data/Hora</th>').appendTo(tr);
-        $('<th>Aerop. Origem</th>').appendTo(tr);
-        $('<th>Aerop. Destino</th>').appendTo(tr);
-        $('<th>Portão de Embarque</th>').appendTo(tr);
+        $('<th>Origem</th>').appendTo(tr);
+        $('<th>Destino</th>').appendTo(tr);
+        $('<th>Embarque</th>').appendTo(tr);
         $.each($.parseJSON(data), function(i, voo){
             var trVoos = $('<tr></tr>').appendTo("#table_voos");
             $('<td>'+voo['nro_voo']+'</td>').appendTo(trVoos);
@@ -199,7 +210,7 @@ function getMecanicosByAeronave(matricula){
         $.each($.parseJSON(data), function(i, mecanico){
             var trMecanicos = $('<tr></tr>').appendTo("#table_mecanicos");
             $('<td>'+mecanico['ordem_servico']+'</td>').appendTo(trMecanicos);
-            $('<td>'+mecanico['cpf_mecanico']+'</td>').appendTo(trMecanicos);
+            $('<td>'+mecanico['cpf_mecanico']+'</td>').addClass('cpf').appendTo(trMecanicos);
             $('<td>'+mecanico['nome']+'</td>').appendTo(trMecanicos);
             $('<td>'+mecanico['endereco']+'</td>').appendTo(trMecanicos);
         });
@@ -208,7 +219,7 @@ function getMecanicosByAeronave(matricula){
     .fail(function(textStatus, errorThrown) {
         console.error("Erro: " + textStatus, errorThrown);
       });
-    
+      
 }
 
 /**
@@ -216,10 +227,12 @@ function getMecanicosByAeronave(matricula){
  * @param {string} matricula
  * @returns {alert() if success or javascript error}
  */
-function removeAeronave(matricula){
+function removeAeronave(){
+    
+    var matricula = $("#update_matricula").val();
+    var operacao = "remover";
     
     if(confirm("Deseja deletar a aeronave de matrícula "+matricula+"?")){
-        var operacao = "remover";
 
         $.post("Controller/ajax/crudAeronave.php", {
             matricula: matricula,
@@ -228,9 +241,12 @@ function removeAeronave(matricula){
             alert("Aeronave excluída com sucesso!");
         })
         .fail(function(textStatus, errorThrown) {
+            alert("Ocorreu um erro na exclusão!");
             console.error("Erro: " + textStatus, errorThrown);
           });
     }
+    $("#update_aeronave_modal").modal("hide");
+    limpaCamposForm();
     setTimeout(atualizaTabela(),500);
 }
 
@@ -335,9 +351,6 @@ function validaCamposAddAeronave(){
     if($("#matricula").val() === ""){
         alert("Preencha o campo Matricula");
         return false;
-    }else if($("#status").val() === "selecione"){
-        alert("Selecione o Status");
-        return false;
     }else if($("#cnpj_companhia").val() === "selecione"){
         alert("Selecione a Companhia Aérea");
         return false;
@@ -351,9 +364,6 @@ function validaCamposAddAeronave(){
 function validaCamposUpdateAeronave(){
     if($("#update_matricula").val() === ""){
         alert("Preencha o campo Matricula");
-        return false;
-    }else if($("#update_status").val() === "selecione"){
-        alert("Selecione o Status");
         return false;
     }else if($("#update_cnpj_companhia").val() === "selecione"){
         alert("Selecione a Companhia Aéria");

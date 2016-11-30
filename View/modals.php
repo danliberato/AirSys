@@ -75,8 +75,7 @@
                 <div class="form-group col-sm-4">
                     <label for="status">Status</label>
                     <select class="form-control" id="status">
-                        <option value="selecione">Selecione...</option>
-                        <option value="ATIVO">Ativo</option>
+                        <option value="ATIVO" selected>Ativo</option>
                         <option value="EM_VOO">Em vôo</option>
                         <option value="EM_MANUTENCAO">Em manutenção</option>
                         <option value="SOB_PERICIA">Sob perícia</option>
@@ -108,9 +107,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Atualizar Aeronave</h4>
+                <h4 class="modal-title" id="myModalLabel">Detalhes da Aeronave</h4>
             </div>
-            <div class="modal-body">
+                <div id="update_detalhes" class="col-sm-12 container">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" class="active"><a href="#tab_detalhes" data-toggle="tab">Detalhes</a></li>
+                        <li role="presentation" ><a href="#tab_voos" data-toggle="tab">Vôos</a></li>
+                        <li role="presentation"><a href="#tab_mecanicos" data-toggle="tab">Manutenções</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="modal-body tab-pane active" id="tab_detalhes">
 
                 <div class="form-group col-sm-4">
                     <label for="update_matricula">Matrícula</label>
@@ -170,7 +176,6 @@
                 <div class="form-group col-sm-4">
                     <label for="update_status">Status</label>
                     <select class="form-control" id="update_status">
-                        <option value="selecione">Selecione...</option>
                         <option value="ATIVO">Ativo</option>
                         <option value="EM_VOO">Em vôo</option>
                         <option value="EM_MANUTENCAO">Em manutenção</option>
@@ -188,14 +193,8 @@
                         ?>
                     </select>
                 </div>
-                
-                <div id="update_detalhes" class="col-sm-12 container">
-                    <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#tab_voos" data-toggle="tab">Vôos</a></li>
-                        <li role="presentation"><a href="#tab_mecanicos" data-toggle="tab">Manutenção</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab_voos">
+            </div>
+                        <div class="tab-pane" id="tab_voos">
                             
                         </div>
                         <div class="tab-pane" id="tab_mecanicos">
@@ -204,10 +203,11 @@
                     </div>
                 </div>
                 
-            </div>
+            
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="atualizaAeronave()">Salvar mudanças</button>
+                <button onclick="removeAeronave()" class="btn btn-danger">Deletar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="atualizaAeronave()">Salvar mudanças</button>
             </div>
         </div>
     </div>

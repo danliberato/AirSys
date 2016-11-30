@@ -37,7 +37,6 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                     </li>
                     <li class="w3-right w3-hide-small">
                         <a href="#refBusca" class="w3-left">Cadastro de Aeronave</a>
-                        <a href="#relatorios" class="w3-left">Relatórios</a>
                     </li>
                 </ul>
             </div>
@@ -98,12 +97,8 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
                 </div>
                 <?php include_once './View/modals.php';?>
             </div>
-            <div id="relatorios" class="row col-sm-10 col-sm-offset-1">
-                <h3>Relatórios</h3>
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">Vôos</a></li>
-                    <li role="presentation"><a href="#">Companhias</a></li>
-                </ul>
+            <div id="pad" class="row col-sm-10 col-sm-offset-1">
+                <label></label>
             </div>
         </div>
         <!-- Footer -->
@@ -115,5 +110,6 @@ while ($companhia = mysqli_fetch_assoc($rsCompanhia)) {
         <script src="js/jquery-3.1.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/funcoes.js"></script>
+        <script src="js/mask.js"></script>
     </body>
 </html>

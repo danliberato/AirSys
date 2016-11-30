@@ -86,15 +86,14 @@ function persistAeronave($operacao){
 
 function buscar(){
     
-    $status;
     $tabela = '<table class="table table-bordered table-striped text-center">
                         <tr>
-                            <th>Nº</th>
+                            <th>#</th>
                             <th>Modelo</th>
                             <th>Matrícula</th>
+                            <th>Nº Poltronas</th>
                             <th>Peso</th>
                             <th>Capacidade</th>
-                            <th>Autonomia</th>
                             <th>Status</th>
                             <th>Companhia</th>
                             <th>Opções</th>
@@ -102,34 +101,23 @@ function buscar(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    $query = 'SELECT * FROM aeronave ';
+    $query = 'SELECT aeronave.modelo, aeronave.matricula, aeronave.peso_aviao, aeronave.nro_poltronas, aeronave.capacidade_bagagem,'
+            . ' aeronave.status, companhia.nome FROM aeronave, companhia WHERE aeronave.cnpj_companhia = companhia.cnpj ';
     
-    if(isset($_POST['status']) && ($_POST['status'] != "selecione") 
-            || isset($_POST['matricula']) && ($_POST['matricula'] != "")
-            || isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){
-        
-        $query .= 'WHERE ';
-        $hasConditions = false;
-
-        if(isset($_POST['status']) && ($_POST['status'] != "selecione")){
-            $query .= ' status = "'. $_POST['status'].'"';
-            $hasConditions = true;
-        }
-
-        if(isset($_POST['matricula']) && $_POST['matricula'] != ''){ 
-            $query .= $hasConditions ? ' AND ' : '';
-            $query .= ' matricula LIKE "'.$_POST['matricula'].'%"';
-            $hasConditions = true;
-
-        }
-
-        if(isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){ 
-            $query .= $hasConditions ? ' AND ' : '';
-            $query .= ' cnpj_companhia = '.$_POST['cnpj_companhia'];
-
-        }
+    
+    if(isset($_POST['status']) && ($_POST['status'] != "selecione")){
+        $query .= ' AND aeronave.status = "'. $_POST['status'].'"';
     }
-    $query .= ' ORDER BY modelo, matricula ASC';
+
+    if(isset($_POST['matricula']) && $_POST['matricula'] != ''){ 
+        $query .= ' AND aeronave.matricula LIKE "%'.$_POST['matricula'].'%"';
+    }
+
+    if(isset($_POST['cnpj_companhia']) && ($_POST['cnpj_companhia'] != "selecione")){ 
+        $query .= ' AND aeronave.cnpj_companhia = '.$_POST['cnpj_companhia'];
+    }
+
+    $query .= ' ORDER BY aeronave.modelo, aeronave.matricula, companhia.nome ASC;';
     
     
     $result = $mysql->executeQuery($query);
@@ -139,23 +127,20 @@ function buscar(){
 
         foreach ($result as $row){
 
-            if($row['status'] != 'INATIVO'){
-                $botaoDeletar = '<button onclick="removeAeronave(\''.$row['matricula'].'\')" class="btn btn-danger">Deletar</button>';
-            }
+            $status = statusToStr($row['status']);
             
             $tabela .= '<tr>
                 <td>'.++$count.'</td>
                 <td>'.$row['modelo'].'</td>
                 <td>'.$row['matricula'].'</td>
+                <td>'.$row['nro_poltronas'].'</td>
                 <td>'.$row['peso_aviao'].' Kg</td>
                 <td>'.$row['capacidade_bagagem'].' Kg</td>
-                <td>'.$row['autonomia'].' Km</td>
-                <td>'.$row['status'].'</td>
-                <td>'.$row['cnpj_companhia'].'</td>
+                <td>'.$status.'</td>
+                <td>'.utf8_encode($row['nome']).'</td>
 
                 <td>
                     <button onclick="detalhesAeronave(\''.$row['matricula'].'\')" class="btn btn-info" data-toggle="modal" data-target="#update_aeronave_modal">Visualizar</button>
-                    '.$botaoDeletar.'
                 </td>
             </tr>';
             
@@ -270,4 +255,31 @@ function countAeronaves(){
     
     $data = mysqli_fetch_assoc($rs);
     echo $data['qtd'];
+}
+
+function statusToStr($status){
+    
+    switch ($status){
+    case "ATIVO":
+        return "Ativo";
+        break;
+    case "IANTIVO":
+        return "Inativo";
+        break;
+    case "EM_VOO":
+        return "Em vôo";
+        break;
+    case "EM_MANUTENCAO":
+        return "Em manutenção";
+        break;
+    case "SOB_PERICIA":
+        return "Sob perícia";
+        break;
+    case "INATIVO":
+        return "Inativo";
+        break;
+    default : return "Ativo";
+        break;
+    }
+    
 }

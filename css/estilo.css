@@ -28,3 +28,9 @@ and open the template in the editor.
 .modal{
     width: 100%;
 }
+
+table, th, td {
+    text-align: center;
+    border: 1px solid #d1e0e0;
+    border-collapse: collapse;
+}
