@@ -203,16 +203,20 @@ function getMecanicosByAeronave(matricula){
         //$(".records_content").html(data);
         $('<table></table>').addClass('table table-bordered table-striped text-center').attr({id: 'table_mecanicos'}).appendTo("#tab_mecanicos");
         var tr = $('<tr></tr>').appendTo("#table_mecanicos");
-        $('<th>Ordem Serviço</th>').appendTo(tr);
+        $('<th>OS</th>').appendTo(tr);
+        $('<th>Data</th>').appendTo(tr);
         $('<th>CPF</th>').appendTo(tr);
         $('<th>Nome</th>').appendTo(tr);
         $('<th>Endereço</th>').appendTo(tr);
+        $('<th>Telefones</th>').appendTo(tr);
         $.each($.parseJSON(data), function(i, mecanico){
             var trMecanicos = $('<tr></tr>').appendTo("#table_mecanicos");
             $('<td>'+mecanico['ordem_servico']+'</td>').appendTo(trMecanicos);
+            $('<td>'+mecanico['data']+'</td>').appendTo(trMecanicos);
             $('<td>'+mecanico['cpf_mecanico']+'</td>').addClass('cpf').appendTo(trMecanicos);
             $('<td>'+mecanico['nome']+'</td>').appendTo(trMecanicos);
             $('<td>'+mecanico['endereco']+'</td>').appendTo(trMecanicos);
+            $('<td><button onclick="buscaTelefones('+mecanico['cpf_mecanico']+')">Mostrar</button></td>').appendTo(trMecanicos);
         });
         
     })
@@ -343,6 +347,25 @@ function countAeronaves(){
       });
     
 }
+
+
+function buscaTelefones(cpf){
+    
+    var operacao = "buscaTelefones";
+    
+    $.post("Controller/ajax/crudAeronave.php", {
+        operacao: operacao,
+        telefone_cpf: cpf
+    }, function (data) {
+        alert("Telefones:"+data);
+    })
+    .fail(function(textStatus, errorThrown) {
+        console.error("Erro: " + textStatus, errorThrown);
+      });
+    
+    
+}
+
 
 /*
  * Check all fields before add an aircraft.

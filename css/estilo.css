@@ -26,7 +26,11 @@ and open the template in the editor.
 }
 
 .modal{
-    width: 100%;
+    width: 90%;
+}
+
+.modal-content{
+    width: 120%;
 }
 
 table, th, td {

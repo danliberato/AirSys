@@ -32,6 +32,9 @@ switch ($_POST['operacao']){
     case "countAeronaves":
         countAeronaves();
         break;
+    case "buscaTelefones":
+        buscaTelefones($_POST['telefone_cpf']);
+        break;
     default :
 }
     
@@ -92,8 +95,6 @@ function buscar(){
                             <th>Modelo</th>
                             <th>Matrícula</th>
                             <th>Nº Poltronas</th>
-                            <th>Peso</th>
-                            <th>Capacidade</th>
                             <th>Status</th>
                             <th>Companhia</th>
                             <th>Opções</th>
@@ -101,7 +102,7 @@ function buscar(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    $query = 'SELECT aeronave.modelo, aeronave.matricula, aeronave.peso_aviao, aeronave.nro_poltronas, aeronave.capacidade_bagagem,'
+    $query = 'SELECT aeronave.modelo, aeronave.matricula, aeronave.nro_poltronas, '
             . ' aeronave.status, companhia.nome FROM aeronave, companhia WHERE aeronave.cnpj_companhia = companhia.cnpj ';
     
     
@@ -134,8 +135,6 @@ function buscar(){
                 <td>'.$row['modelo'].'</td>
                 <td>'.$row['matricula'].'</td>
                 <td>'.$row['nro_poltronas'].'</td>
-                <td>'.$row['peso_aviao'].' Kg</td>
-                <td>'.$row['capacidade_bagagem'].' Kg</td>
                 <td>'.$status.'</td>
                 <td>'.utf8_encode($row['nome']).'</td>
 
@@ -190,7 +189,7 @@ function getVoosByAeronave(){
     
     $result = $mysql->executeQuery($query);
     $lista_voo = array();
-    
+
     foreach ($result as $voo){
         $lista_voo[] = [
           "nro_voo" => $voo["nro_voo"],
@@ -200,7 +199,7 @@ function getVoosByAeronave(){
           "portao_embarque" => $voo["portao_embarque"]
         ];
     }
-    
+
     echo json_encode($lista_voo);
 }
 
@@ -208,7 +207,7 @@ function getMecanicosByAeronave(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    $query = "SELECT DISTINCT mu.ordem_servico, ma.cpf_mecanico, mo.nome, mo.endereco FROM manutencao mu JOIN manutencia ma JOIN mecanico mo ON mu.ordem_servico = ma.ordem_servico AND mo.cpf = ma.cpf_mecanico AND mu.aeronave_matricula = '".$_POST['matricula']."';";
+    $query = "SELECT DISTINCT mu.ordem_servico, mu.data, ma.cpf_mecanico, mo.nome, mo.endereco FROM manutencao mu JOIN manutencia ma JOIN mecanico mo ON mu.ordem_servico = ma.ordem_servico AND mo.cpf = ma.cpf_mecanico AND mu.aeronave_matricula = '".$_POST['matricula']."'  ORDER BY mu.data, mu.ordem_servico DESC;";
     
     $result = $mysql->executeQuery($query);
     $lista_mecanicos = array();
@@ -216,6 +215,7 @@ function getMecanicosByAeronave(){
     foreach ($result as $mecanico){
         $lista_mecanicos[] = [
           "ordem_servico" => $mecanico["ordem_servico"],
+          "data" => $mecanico["data"],
           "cpf_mecanico" => $mecanico["cpf_mecanico"],
           "nome" => utf8_encode($mecanico["nome"]),
           "endereco" => utf8_encode($mecanico["endereco"])
@@ -249,12 +249,30 @@ function countAeronaves(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    $query = 'SELECT COUNT(modelo) as qtd FROM aeronave;';
+    $query = 'SELECT COUNT(matricula) as qtd FROM aeronave;';
     
     $rs = $mysql->executeQuery($query);
     
     $data = mysqli_fetch_assoc($rs);
     echo $data['qtd'];
+}
+
+function buscaTelefones($cpf){
+    
+    $mysql = new ConexaoBD("localhost", "user", "123456", "test");
+    
+    $query = "SELECT * FROM telefone WHERE mecanico_cpf =".$cpf;
+    
+    $result = $mysql->executeQuery($query);
+    $lista_telefones = "";
+    
+    
+    foreach ($result as $telefone){
+        $lista_telefones .= "\n";
+        $lista_telefones .= $telefone['telefone'];
+    }
+    
+    echo $lista_telefones;
 }
 
 function statusToStr($status){
@@ -263,7 +281,7 @@ function statusToStr($status){
     case "ATIVO":
         return "Ativo";
         break;
-    case "IANTIVO":
+    case "INATIVO":
         return "Inativo";
         break;
     case "EM_VOO":
@@ -274,9 +292,6 @@ function statusToStr($status){
         break;
     case "SOB_PERICIA":
         return "Sob perícia";
-        break;
-    case "INATIVO":
-        return "Inativo";
         break;
     default : return "Ativo";
         break;
