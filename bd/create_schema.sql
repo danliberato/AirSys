@@ -27,17 +27,17 @@ DROP TABLE IF EXISTS `aeronave`;
 CREATE TABLE `aeronave` (
   `matricula` varchar(11) NOT NULL,
   `modelo` varchar(90) NOT NULL,
-  `data_fabricacao` date DEFAULT NULL,
-  `envergadura` double DEFAULT NULL,
-  `total_horas_voo` double DEFAULT NULL,
-  `combustivel` double DEFAULT NULL,
-  `peso_aviao` double DEFAULT NULL,
-  `nro_poltronas` int(11) DEFAULT NULL,
-  `peso_maximo` double DEFAULT NULL,
-  `consumo` double DEFAULT NULL,
-  `autonomia` double DEFAULT NULL,
-  `capacidade_bagagem` double DEFAULT NULL,
-  `status` enum('ATIVO','INATIVO','EM_VOO','EM_MANUTENCAO','SOB_PERICIA') DEFAULT 'ATIVO',
+  `data_fabricacao` date NOT NULL,
+  `envergadura` double NOT NULL,
+  `total_horas_voo` double NOT NULL,
+  `combustivel` double NOT NULL,
+  `peso_aviao` double NOT NULL,
+  `nro_poltronas` int(11) NOT NULL,
+  `peso_maximo` double NOT NULL,
+  `consumo` double NOT NULL,
+  `autonomia` double NOT NULL,
+  `capacidade_bagagem` double NOT NULL,
+  `status` enum('ATIVO','INATIVO','EM_VOO','EM_MANUTENCAO','SOB_PERICIA') NOT NULL DEFAULT 'ATIVO',
   `cnpj_companhia` bigint(14) unsigned NOT NULL,
   PRIMARY KEY (`matricula`),
   UNIQUE KEY `matricula_UNIQUE` (`matricula`),
@@ -62,6 +62,23 @@ CREATE TABLE `companhia` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `executa`
+--
+
+DROP TABLE IF EXISTS `executa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `executa` (
+  `cpf_mecanico` bigint(11) NOT NULL,
+  `ordem_servico` int(11) NOT NULL,
+  KEY `manutencia_mecanico_idx` (`cpf_mecanico`),
+  KEY `manutencia_manutencao_idx` (`ordem_servico`),
+  CONSTRAINT `manutencia_manutencao` FOREIGN KEY (`ordem_servico`) REFERENCES `manutencao` (`ordem_servico`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `manutencia_mecanico` FOREIGN KEY (`cpf_mecanico`) REFERENCES `mecanico` (`cpf`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `manutencao`
 --
 
@@ -77,23 +94,6 @@ CREATE TABLE `manutencao` (
   KEY `manutencao_aeronave` (`aeronave_matricula`),
   CONSTRAINT `manutencao_aeronave` FOREIGN KEY (`aeronave_matricula`) REFERENCES `aeronave` (`matricula`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `manutencia`
---
-
-DROP TABLE IF EXISTS `manutencia`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `manutencia` (
-  `cpf_mecanico` bigint(11) NOT NULL,
-  `ordem_servico` int(11) NOT NULL,
-  KEY `manutencia_mecanico_idx` (`cpf_mecanico`),
-  KEY `manutencia_manutencao_idx` (`ordem_servico`),
-  CONSTRAINT `manutencia_manutencao` FOREIGN KEY (`ordem_servico`) REFERENCES `manutencao` (`ordem_servico`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `manutencia_mecanico` FOREIGN KEY (`cpf_mecanico`) REFERENCES `mecanico` (`cpf`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,4 +157,4 @@ CREATE TABLE `voo` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-01  1:27:58
+-- Dump completed on 2016-12-01 21:56:05
