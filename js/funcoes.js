@@ -373,6 +373,57 @@ function buscaTelefones(cpf){
 function validaCamposAddAeronave(){
     if($("#matricula").val() === ""){
         alert("Preencha o campo Matricula");
+        $("#matricula").focus();
+        return false;
+    }
+    else if($("#modelo").val() === ""){
+        alert("Preencha o campo Modelo");
+        $("#modelo").focus();
+        return false;
+    }
+    else if($("#data_fabricacao").val() === ""){
+        alert("Preencha o campo Data de fabricação");
+        $("#data_fabricacao").focus();
+        return false;
+    }
+    else if($("#envergadura").val() === ""){
+        alert("Preencha o campo Envergadura");
+        $("#envergadura").focus();
+        return false;
+    }
+    else if($("#total_horas_voo").val() === ""){
+        alert("Preencha o campo Total de horas voadas");
+        $("#total_horas_voo").focus();
+        return false;
+    }
+    else if($("#peso_aviao").val() === ""){
+        alert("Preencha o campo Peso da aeronave");
+        $("#peso_aviao").focus();
+        return false;
+    }
+    else if($("#combustivel").val() === ""){
+        alert("Preencha o campo Combustível");
+        $("#combustivel").focus();
+        return false;
+    }
+    else if($("#peso_maximo").val() === ""){
+        alert("Preencha o campo Peso máximo de decolagem");
+        $("#peso_maximo").focus();
+        return false;
+    }
+    else if($("#nro_poltronas").val() === ""){
+        alert("Preencha o campo Número de poltronas");
+        $("#nro_poltronas").focus();
+        return false;
+    }
+    else if($("#autonomia").val() === ""){
+        alert("Preencha o campo Autonomia");
+        $("#autonomia").focus();
+        return false;
+    }
+    else if($("#capacidade_bagagem").val() === ""){
+        alert("Preencha o campo Capacidade de bagagem");
+        $("#capacidade_bagagem").focus();
         return false;
     }else if($("#cnpj_companhia").val() === "selecione"){
         alert("Selecione a Companhia Aérea");
@@ -387,9 +438,60 @@ function validaCamposAddAeronave(){
 function validaCamposUpdateAeronave(){
     if($("#update_matricula").val() === ""){
         alert("Preencha o campo Matricula");
+        $("#update_matricula").focus();
+        return false;
+    }
+    else if($("#update_modelo").val() === ""){
+        alert("Preencha o campo Modelo");
+        $("#update_modelo").focus();
+        return false;
+    }
+    else if($("#update_data_fabricacao").val() === ""){
+        alert("Preencha o campo Data de fabricação");
+        $("#update_data_fabricacao").focus();
+        return false;
+    }
+    else if($("#update_envergadura").val() === ""){
+        alert("Preencha o campo Envergadura");
+        $("#update_envergadura").focus();
+        return false;
+    }
+    else if($("#update_total_horas_voo").val() === ""){
+        alert("Preencha o campo Total de horas voadas");
+        $("#update_total_horas_voo").focus();
+        return false;
+    }
+    else if($("#update_peso_aviao").val() === ""){
+        alert("Preencha o campo Peso da aeronave");
+        $("#update_peso_aviao").focus();
+        return false;
+    }
+    else if($("#update_combustivel").val() === ""){
+        alert("Preencha o campo Combustível");
+        $("#update_combustivel").focus();
+        return false;
+    }
+    else if($("#update_peso_maximo").val() === ""){
+        alert("Preencha o campo Peso máximo de decolagem");
+        $("#update_peso_maximo").focus();
+        return false;
+    }
+    else if($("#update_nro_poltronas").val() === ""){
+        alert("Preencha o campo Número de poltronas");
+        $("#update_nro_poltronas").focus();
+        return false;
+    }
+    else if($("#update_autonomia").val() === ""){
+        alert("Preencha o campo Autonomia");
+        $("#update_autonomia").focus();
+        return false;
+    }
+    else if($("#update_capacidade_bagagem").val() === ""){
+        alert("Preencha o campo Capacidade de bagagem");
+        $("#update_capacidade_bagagem").focus();
         return false;
     }else if($("#update_cnpj_companhia").val() === "selecione"){
-        alert("Selecione a Companhia Aéria");
+        alert("Selecione a Companhia Aérea");
         return false;
     }
     return true;

@@ -207,7 +207,7 @@ function getMecanicosByAeronave(){
     
     $mysql = new ConexaoBD("localhost", "user", "123456", "test");
     
-    $query = "SELECT DISTINCT mu.ordem_servico, mu.data, ma.cpf_mecanico, mo.nome, mo.endereco FROM manutencao mu JOIN manutencia ma JOIN mecanico mo ON mu.ordem_servico = ma.ordem_servico AND mo.cpf = ma.cpf_mecanico AND mu.aeronave_matricula = '".$_POST['matricula']."'  ORDER BY mu.data, mu.ordem_servico DESC;";
+    $query = "SELECT DISTINCT mu.ordem_servico, mu.data, ma.cpf_mecanico, mo.nome, mo.endereco FROM manutencao mu JOIN executa ma JOIN mecanico mo ON mu.ordem_servico = ma.ordem_servico AND mo.cpf = ma.cpf_mecanico AND mu.aeronave_matricula = '".$_POST['matricula']."'  ORDER BY mu.data, mu.ordem_servico DESC;";
     
     $result = $mysql->executeQuery($query);
     $lista_mecanicos = array();
