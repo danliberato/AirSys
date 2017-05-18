@@ -8,7 +8,7 @@ USANDO O GIT:
 • Clonando o repositório
 - Criar pasta para o projeto e entrar nela (mkdir AirSys, cd AirSys)
 - Inicializar Git (git init)
-- Referenciar repositórios (git remote add airsys git@github.com:danliberato/AirSys)
+- Referenciar repositórios (git remote add airsys https://github.com/danliberato/AirSys)
 - Clonar (baixar) o repositório remoto para o local (git pull airsys master)
 
 • Adicionando mudanças
